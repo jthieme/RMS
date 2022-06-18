@@ -1,0 +1,203 @@
+<html>
+  <head>
+    <style>
+    	div .white-text {
+        color: #fff;
+        font-size: 1.2em;
+      }
+      
+      .left {
+        text-align: "left";
+      }
+      
+      div #agenda {
+        padding: 4rem 0;
+        text-align: left;
+      }
+      
+      div .output {
+        margin: -1em 0;
+      }
+      
+      .heading-margin {
+        margin-left: 32%;
+      }
+      
+      .agenda-margin {
+        margin-left: 34%;
+      }
+      
+      #overall {
+        padding-top: 20px;
+        font-size: 35px;
+        color: #e09900;
+      }
+      
+      @media only screen and (max-width: 800px){
+        .heading-margin {
+          margin-left: 10%;
+        }
+        
+        .agenda-margin {
+          margin-left: 12%;
+        }
+      }
+      
+    </style>
+    
+    <script>
+
+      function setPrevData(p) {
+
+        // The the fields as the previous entry
+        document.getElementById("theme").textContent = p.theme;
+        document.getElementById("date").textContent = p.date;
+        document.getElementById("presiding").textContent = p.presiding;
+        document.getElementById("conducting").textContent = p.conducting;
+        document.getElementById("chorister").textContent = p.chorister;
+        document.getElementById("organist").textContent = p.organist;
+        document.getElementById("openPrayer").textContent = p.openPrayer;
+        document.getElementById("openHymn").textContent = p.openHymn;
+        document.getElementById("sacHymn").textContent = p.sacHymn;
+        document.getElementById("firstSpeaker").textContent = p.firstSpeaker;
+        document.getElementById("secSpeaker").textContent = p.secSpeaker;
+        document.getElementById("intHymn").textContent = p.intHymn;
+        document.getElementById("thirdSpeaker").textContent = p.thirdSpeaker;
+        document.getElementById("closePrayer").textContent = p.closePrayer;
+        document.getElementById("closeHymn").textContent = p.closeHymn;
+        document.getElementById("announcements").textContent = p.announcements;
+      }
+      
+    	const getData = async () => {
+      
+        // Get the data from the API
+    	  let url = "https://rms-agenda.herokuapp.com/update/find";
+        fetch(url)
+    		 .then(res => res.json())
+         .then((resp) => {
+           console.log(resp)
+           for (var i = 0; i < resp.length-1; i++){
+
+            // If any of the fields are empty
+            if (resp[i].theme === '' 
+                || resp[i].date === '' 
+                || resp[i].presiding === '' 
+                || resp[i].chorister === '' 
+                || resp[i].conducting === '' 
+                || resp[i].organist === ''
+                || resp[i].openPrayer === '' 
+                || resp[i].openHymn === '' 
+                || resp[i].sacHymn === ''
+                || resp[i].firstSpeaker === '' 
+                || resp[i].secSpeaker === '' 
+                || resp[i].intHymn === ''
+                || resp[i].thirdSpeaker === ''
+                || resp[i].fourthSpeaker === ''
+                || resp[i].closePrayer === '' 
+                || resp[i].closeHymn === ''
+                || resp[i].announcements === ''){
+                
+                // Roll back to the previous database entry
+                const prevData = resp[i-(i%2)];
+                
+                // Then set them as the previous entry
+                setPrevData(prevData);
+              } // End If statement
+            } // End For loop
+            // If any of the fields are not empty,
+            // Set them to what the user typed in
+          
+          	if (resp[i].fast === true){
+              document.getElementById("firstSpeakerLabel").textContent = '';
+              document.getElementById("secSpeakerLabel").textContent = '';
+              document.getElementById("intHymnLabel").textContent = 'Testimonies of the Ward Members';
+              document.getElementById("thirdSpeakerLabel").textContent = '';
+              document.getElementById("fourthSpeakerLabel").textContent = '';
+            }
+          	else {
+            	document.getElementById("theme").textContent = resp[i].theme;
+              document.getElementById("date").textContent = resp[i].date;
+              document.getElementById("presiding").textContent = resp[i].presiding;
+              document.getElementById("conducting").textContent = resp[i].conducting;
+              document.getElementById("chorister").textContent = resp[i].chorister;
+              document.getElementById("organist").textContent = resp[i].organist;
+              document.getElementById("openPrayer").textContent = resp[i].openPrayer;
+              document.getElementById("openHymn").textContent = resp[i].openHymn;
+              document.getElementById("sacHymn").textContent = resp[i].sacHymn;
+              document.getElementById("firstSpeaker").textContent = resp[i].firstSpeaker;
+              document.getElementById("secSpeaker").textContent = resp[i].secSpeaker;
+              document.getElementById("intHymn").textContent = resp[i].intHymn;
+              document.getElementById("thirdSpeaker").textContent = resp[i].thirdSpeaker;
+              document.getElementById("fourthSpeaker").textContent = resp[i].fourthSpeaker;
+              document.getElementById("closePrayer").textContent = resp[i].closePrayer;
+              document.getElementById("closeHymn").textContent = resp[i].closeHymn;
+              document.getElementById("announcements").textContent = resp[i].announcements;  
+            }
+            
+        })
+    }
+      
+      
+    </script>
+  </head>
+  
+  <body id="loadData" onload="getData()">
+    
+    <div id="overall" class="heading-margin">
+      Meeting Agenda
+    </div>
+    <div id="agenda" class="white-text left agenda-margin">
+    	<p class="output">Monthly Theme: 
+        <span id="theme"></span></p>
+      <p class="output">Sacrament Meeting for
+        <span id="date"></span>
+      </p>
+      <p class="output">Presiding: 
+        <span id="presiding"></span>
+      </p>
+      <p class="output">Conducting: 
+        <span id="conducting"></span>
+      </p>
+      <p class="output">Chorister: 
+        <span id="chorister"></span>
+      </p>
+      <p class="output">Organist/Pianist: 
+        <span id="organist"></span>
+      </p>
+      <br>
+      <p class="output">Opening Prayer: 
+        <span id="openPrayer"></span>
+      </p>
+      <p class="output">Opening Hymn: 
+        <span id="openHymn"></span>
+      </p>
+      <p class="output">Sacrament Hymn: 
+        <span id="sacHymn"></span>
+      </p>
+      <br>
+      <p id="firstSpeakerLabel" class="output">First Speaker: 
+        <span id="firstSpeaker"></span>
+      </p>
+      <p id="secSpeakerLabel" class="output">Second Speaker: 
+        <span id="secSpeaker"></span>
+      </p>
+      <p id="intHymnLabel" class="output">Intermediate Hymn: 
+        <span id="intHymn"></span>
+      </p>
+      <p id="thirdSpeakerLabel" class="output">Third Speaker: 
+        <span id="thirdSpeaker"></span>
+      </p>
+      <p id="fourthSpeakerLabel" class="output">Fourth Speaker: 
+        <span id="fourthSpeaker"></span>
+      </p>
+      <br>
+      <p class="output">Closing Hymn: 
+        <span id="closeHymn"></span>
+      </p>
+      <p class="output">Closing Prayer: 
+        <span id="closePrayer"></span>
+      </p>
+    </div>
+  
+  </body>
+</html>

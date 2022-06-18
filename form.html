@@ -1,0 +1,243 @@
+<html lang="en">
+<head>
+    <style>
+            
+        .input {
+            padding: 5px;
+            margin: 5px;
+            border-radius: 8px;
+        }
+        
+      	.btn {
+            position: relative;
+            background-color: #737373;
+            border: none;
+          	border-radius: 8px;
+            font-size: 16px;
+            color: #FFFFFF;
+            padding: 8px;
+            width: 200px;
+            text-align: center;
+            -webkit-transition-duration: 0.4s; /* Safari */
+            transition-duration: 0.4s;
+            text-decoration: none;
+            overflow: hidden;
+            cursor: pointer;
+          }
+
+          .btn:after {
+            content: "";
+            background: #c3c3c3;
+            display: block;
+            position: absolute;
+            padding-top: 300%;
+            padding-left: 350%;
+            margin-left: -20px!important;
+            margin-top: -120%;
+            opacity: 0;
+            transition: all 0.8s
+          }
+
+          .btn:active:after {
+            padding: 0;
+            margin: 0;
+            opacity: 1;
+            transition: 0s
+          }
+        
+        .header {
+            color: #fff;
+            font-size: 3em;
+        }
+        
+        .white-text {
+            color: #fff;
+        }
+      .white-size {
+        font-size: 1.3em;
+      }
+      
+      .white-label {
+        color: white;
+        font-size: 1.2em;
+      }
+      
+      #announcements {
+        width: 450px; 
+        height: 110px;
+      }
+      
+      .tab {
+        tab-size: 4;
+      }
+				
+      @media only screen and (max-width: 800px){
+        #announcements {
+          width: 80%;
+        }
+      }
+       
+    </style>
+
+
+
+    <script>
+        async function submitForm(){
+        
+        // Initialize the variables
+        let theme = document.getElementById("theme").value;
+        let date = document.getElementById("date").value;
+        let presiding = document.getElementById("presiding").value;
+        let conducting = document.getElementById("conducting").value;
+        let chorister = document.getElementById("chorister").value;
+        let organist = document.getElementById("organist").value;
+        let openPrayer = document.getElementById("openPrayer").value;
+        let openHymn = document.getElementById("openHymn").value;
+        let sacHymn = document.getElementById("sacHymn").value;
+        let firstSpeaker = document.getElementById("firstSpeaker").value;
+        let secSpeaker = document.getElementById("secSpeaker").value;
+        let intHymn = document.getElementById("intHymn").value;
+        let thirdSpeaker = document.getElementById("thirdSpeaker").value;
+        let fourthSpeaker = document.getElementById("fourthSpeaker").value;
+        let closeHymn = document.getElementById("closeHymn").value;
+        let closePrayer = document.getElementById("closePrayer").value;
+        let announcements = document.getElementById("announcements").value;
+        let fast = document.getElementById("fast").checked;
+
+        // Initialize the data object
+        const data = {
+            "theme": theme,
+            "date": date,
+            "presiding": presiding,
+            "conducting": conducting,
+            "chorister": chorister,
+            "organist": organist,
+            "openPrayer": openPrayer,
+            "openHymn": openHymn,
+            "sacHymn": sacHymn,
+            "firstSpeaker": firstSpeaker,
+            "secSpeaker": secSpeaker,
+            "intHymn": intHymn,
+            "thirdSpeaker": thirdSpeaker,
+          	"fourthSpeaker": fourthSpeaker,
+            "closePrayer": closePrayer,
+            "closeHymn": closeHymn,
+            "announcements": announcements,
+            "fast": fast
+        };
+
+        let updateURL = "https://rms-agenda.herokuapp.com/update/create";
+        
+        //post info to url here
+        await fetch(updateURL, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data),
+        })
+        .then(resp => resp.json())
+        .then(json => {
+          console.log(json);
+          // After info has been submitted to the database
+          // Clear all of the fields
+          if (theme !== ''
+             || date !== ''
+             || presiding !== ''
+             || conducting !== ''
+             || chorister !== ''
+             || organist !== ''
+             || openPrayer !== ''
+             || openHymn !== ''
+             || sacHymn !== ''
+             || firstSpeaker !== ''
+             || secSpeaker !== ''
+             || intHymn !== ''
+             || thirdSpeaker !== ''
+             || fourthSpeaker !== ''
+             || closePrayer !== ''
+             || closeHymn !== ''
+             || announcements !== ''
+             || fast !== false) {
+            theme = '';
+        		date = '';
+         		presiding = '';
+         		conducting = '';
+         		chorister = '';
+         		organist = '';
+         		openPrayer = '';
+         		openHymn = '';
+         		sacHymn = '';
+         		firstSpeaker = '';
+         		secSpeaker = '';
+        		intHymn = '';
+        		thirdSpeaker = '';
+         		fourthSpeaker = ''; 
+         		closeHymn = '';
+        		closePrayer = '';
+        		announcements = '';
+         		fast = false;
+          } // end if statement
+          
+          document.location.href = "https://rms26ward.com/announcements/";
+        })
+        .catch(err => console.log(err))
+          
+          
+    };
+    </script>
+</head>
+<body id="inputBody">
+    <center>
+      <br>
+        <h1 class="header">Meeting Agenda Update Form</h1>
+    </center>
+  <br> <br>
+    <center>
+        <input id="fast" type="checkbox" class="input">
+        <label id="checkLabel" class="white-text white-size">Fast & Testimony Meeting</label>
+    </center>
+    <br>
+
+    <center>
+      <!--
+      	<label class="white-label tab">Theme </label>
+      	<label class="white-label tab">Date </label>
+      	<label class="white-label tab">Presiding </label>
+      	<label class="white-label">Conducting </label><br> -->
+        <input id="theme" class="input" placeholder="Theme">
+        <input id="date" class="input" placeholder="Date">
+        <input id="presiding" class="input" placeholder="Presiding">
+        <input id="conducting" class="input" placeholder="Conducting">
+    </center>
+
+    <center>
+        <input id="chorister" class="input" placeholder="Chorister">
+        <input id="organist" class="input" placeholder="Organist">
+        <input id="openPrayer" class="input" placeholder="Opening Prayer">
+        <input id="openHymn" class="input" placeholder="Opening Hymn">
+    </center>
+
+    <center>
+        <input id="sacHymn" class="input" placeholder="Sacrament Hymn">
+        <input id="firstSpeaker" class="input" placeholder="First Speaker">
+        <input id="secSpeaker" class="input" placeholder="Second Speaker">
+        <input id="intHymn" class="input" placeholder="Intermediate Hymn">
+    </center>
+
+    <center>
+        <input id="thirdSpeaker" class="input" placeholder="Third Speaker">
+        <input id="fourthSpeaker" class="input" placeholder="Fourth Speaker">
+        <input id="closePrayer" class="input" placeholder="Closing Prayer">
+        <input id="closeHymn" class="input" placeholder="Closing Hymn">
+        <br> <br>
+        <textarea id="announcements" class="input" placeholder="Announcements"></textarea>
+        <br> <br>
+        <button class="btn" onclick="submitForm()">Submit to Website</button>
+      <br> <br> <br>
+    </center>
+</body>
+</html>
+
+                
+
