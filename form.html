@@ -82,51 +82,79 @@
 
 
     <script>
-        async function submitForm(){
+      async function submitForm(){
         
         // Initialize the variables
-        let theme = document.getElementById("theme").value;
-        let date = document.getElementById("date").value;
-        let presiding = document.getElementById("presiding").value;
-        let conducting = document.getElementById("conducting").value;
-        let chorister = document.getElementById("chorister").value;
-        let organist = document.getElementById("organist").value;
-        let openPrayer = document.getElementById("openPrayer").value;
-        let openHymn = document.getElementById("openHymn").value;
-        let sacHymn = document.getElementById("sacHymn").value;
-        let firstSpeaker = document.getElementById("firstSpeaker").value;
-        let secSpeaker = document.getElementById("secSpeaker").value;
-        let intHymn = document.getElementById("intHymn").value;
-        let thirdSpeaker = document.getElementById("thirdSpeaker").value;
-        let fourthSpeaker = document.getElementById("fourthSpeaker").value;
-        let closeHymn = document.getElementById("closeHymn").value;
-        let closePrayer = document.getElementById("closePrayer").value;
-        let announcements = document.getElementById("announcements").value;
+        let theme = document.getElementById("theme");
+        let date = document.getElementById("date");
+        let presiding = document.getElementById("presiding");
+        let conducting = document.getElementById("conducting");
+        let chorister = document.getElementById("chorister");
+        let organist = document.getElementById("organist");
+        let openPrayer = document.getElementById("openPrayer");
+        let openHymn = document.getElementById("openHymn");
+        let sacHymn = document.getElementById("sacHymn");
+        let firstSpeaker = document.getElementById("firstSpeaker");
+        let secSpeaker = document.getElementById("secSpeaker");
+        let intHymn = document.getElementById("intHymn");
+        let thirdSpeaker = document.getElementById("thirdSpeaker");
+        let fourthSpeaker = document.getElementById("fourthSpeaker");
+        let closeHymn = document.getElementById("closeHymn");
+        let closePrayer = document.getElementById("closePrayer");
+        let announcements = document.getElementById("announcements");
         let fast = document.getElementById("fast").checked;
+
+        // If the previous data is not being changed
+        if (theme.placeholder !== "" && theme.value === ""
+          || date.placeholder !== "" && date.value === ""
+          || presiding.placeholder !== "" && presiding.value === ""
+          || conducting.placeholder !== "" && conducting.value === ""
+          || chorister.placeholder !== "" && chorister.value === ""
+          || organist.placeholder !== "" && organist.value === ""
+          || announcements.placeholder !== "" && announcements.value === ""){
+          
+          // Resubmit the same data
+          theme.value = theme.placeholder;
+          date.value = date.placeholder;
+          presiding.value = presiding.placeholder;
+          conducting.value = conducting.placeholder;
+          chorister.value = chorister.placeholder;
+          organist.value = organist.placeholder;
+          announcements.value = announcements.placeholder;
+        } else {
+          // otherwise reset the values
+          theme.value = theme.value;
+          date.value = date.value;
+          presiding.value = presiding.value;
+          conducting.value = conducting.value;
+          chorister.value = chorister.value;
+          organist.value = organist.value;
+          announcements.value = announcements.value;
+        }        
 
         // Initialize the data object
         const data = {
-            "theme": theme,
-            "date": date,
-            "presiding": presiding,
-            "conducting": conducting,
-            "chorister": chorister,
-            "organist": organist,
-            "openPrayer": openPrayer,
-            "openHymn": openHymn,
-            "sacHymn": sacHymn,
-            "firstSpeaker": firstSpeaker,
-            "secSpeaker": secSpeaker,
-            "intHymn": intHymn,
-            "thirdSpeaker": thirdSpeaker,
-          	"fourthSpeaker": fourthSpeaker,
-            "closePrayer": closePrayer,
-            "closeHymn": closeHymn,
-            "announcements": announcements,
+            "theme": theme.value,
+            "date": date.value,
+            "presiding": presiding.value,
+            "conducting": conducting.value,
+            "chorister": chorister.value,
+            "organist": organist.value,
+            "openPrayer": openPrayer.value,
+            "openHymn": openHymn.value,
+            "sacHymn": sacHymn.value,
+            "firstSpeaker": firstSpeaker.value,
+            "secSpeaker": secSpeaker.value,
+            "intHymn": intHymn.value,
+            "thirdSpeaker": thirdSpeaker.value,
+          	"fourthSpeaker": fourthSpeaker.value,
+            "closePrayer": closePrayer.value,
+            "closeHymn": closeHymn.value,
+            "announcements": announcements.value,
             "fast": fast
         };
 
-        let updateURL = "https://rms-agenda.herokuapp.com/update/create";
+        let updateURL = "https://good-bat-spacesuit.cyclic.app/update/create";
         
         //post info to url here
         await fetch(updateURL, {
@@ -139,6 +167,7 @@
         .then(resp => resp.json())
         .then(json => {
           console.log(json);
+
           // After info has been submitted to the database
           // Clear all of the fields
           if (theme !== ''
@@ -182,12 +211,48 @@
           document.location.href = "https://rms26ward.com/announcements/";
         })
         .catch(err => console.log(err))
-          
-          
     };
+
+    async function loadPrevData() {
+    
+      // Initialize url variable
+      let prevDataURL = "https://good-bat-spacesuit.cyclic.app/update/find";
+
+      // Get the data from the database
+      fetch(prevDataURL)
+      .then(res => res.json())
+      .then(resp => {
+        console.log(resp);
+        
+        // Set the placeholders from the latest entry
+        for (var i = 0; i < resp.length; i++) {
+          document.getElementById("theme").placeholder = resp[i].theme;
+          document.getElementById("date").placeholder = resp[i].date;
+          document.getElementById("presiding").placeholder = resp[i].presiding;
+          document.getElementById("conducting").placeholder = resp[i].conducting;
+          document.getElementById("chorister").placeholder = resp[i].chorister;
+          document.getElementById("organist").placeholder = resp[i].organist;
+          document.getElementById("openPrayer").placeholder = resp[i].openPrayer;
+          document.getElementById("openHymn").placeholder = resp[i].openHymn;
+          document.getElementById("sacHymn").placeholder = resp[i].sacHymn;
+          document.getElementById("firstSpeaker").placeholder = resp[i].firstSpeaker;
+          document.getElementById("secSpeaker").placeholder = resp[i].secSpeaker;
+          document.getElementById("intHymn").placeholder = resp[i].intHymn;
+          document.getElementById("thirdSpeaker").placeholder = resp[i].thirdSpeaker;
+          document.getElementById("fourthSpeaker").placeholder = resp[i].fourthSpeaker;
+          document.getElementById("closeHymn").placeholder = resp[i].closeHymn;
+          document.getElementById("closePrayer").placeholder = resp[i].closePrayer;
+          document.getElementById("announcements").placeholder = resp[i].announcements;
+        }
+
+      })
+
+    }
+
+
     </script>
 </head>
-<body id="inputBody">
+<body id="inputBody" onload="loadPrevData()">
     <center>
       <br>
         <h1 class="header">Meeting Agenda Update Form</h1>

@@ -71,7 +71,7 @@
     	const getData = async () => {
       
         // Get the data from the API
-    	  let url = "https://rms-agenda.herokuapp.com/update/find";
+    	  let url = "https://good-bat-spacesuit.cyclic.app/update/find";
         fetch(url)
     		 .then(res => res.json())
          .then((resp) => {
@@ -98,7 +98,7 @@
                 || resp[i].announcements === ''){
                 
                 // Roll back to the previous database entry
-                const prevData = resp[i-(i%2)];
+                const prevData = resp[i];
                 
                 // Then set them as the previous entry
                 setPrevData(prevData);
@@ -133,7 +133,31 @@
               document.getElementById("closeHymn").textContent = resp[i].closeHymn;
               document.getElementById("announcements").textContent = resp[i].announcements;  
             }
+
+            //
+            // get rid of any unused label
+            //
+
+            // if there is not intermediate hymn
+            if (resp[i].intHymn === "")
+            {
+              // don't use the label
+              document.getElementById("intHymnLabel").textContent = '';
+            }
             
+            // if there is no third speaker
+            if (resp[i].thirdSpeaker === "")
+            {
+              // don't use the label
+              document.getElementById("thirdSpeakerLabel").textContent = '';
+            }
+
+            // if there is no fourth speaker
+            if (resp[i].fourthSpeaker === "")
+            {
+              // don't use the label
+              document.getElementById("fourthSpeakerLabel").textContent = '';
+            }
         })
     }
       
